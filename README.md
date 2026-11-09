@@ -17,13 +17,13 @@ This repository contains:
 
 ## Current Release
 
-**RadioBee P1 firmware 0.2.42 (F3D31)**:
+**RadioBee P1 firmware v0.2.42**:
 [download from Releases](https://github.com/hebersoto/radiobee-releases/releases/latest)
 
 | File | Flash address | Use |
 |---|---|---|
-| `RadioBee_P1_F3D31_0.2.42_update_0x10000.bin` | `0x10000` | **Normal update.** Keeps your saved settings. |
-| `RadioBee_P1_F3D31_0.2.42_full_0x0.bin` | `0x0` | Blank or unknown ESP32, or recovery. **Erases saved settings.** |
+| `RadioBee_P1_v0.2.42_update_0x10000.bin` | `0x10000` | **Normal update.** Keeps your saved settings. |
+| `RadioBee_P1_v0.2.42_full_0x0.bin` | `0x0` | Blank or unknown ESP32, or recovery. **Erases saved settings.** |
 
 ## How to Flash
 
@@ -34,8 +34,13 @@ Step-by-step guide (web flasher in Chrome/Edge, esptool, or Espressif Flash Down
 Quick update with esptool (replace `COM5` with your port):
 
 ```sh
-esptool --chip esp32 -p COM5 -b 460800 write-flash 0x10000 RadioBee_P1_F3D31_0.2.42_update_0x10000.bin
+esptool --chip esp32 -p COM5 -b 460800 write-flash 0x10000 RadioBee_P1_v0.2.42_update_0x10000.bin
 ```
+
+## Using RadioBee
+
+BOOT button, LEDs, USB console, Bluetooth (SPP) and BLE (nRF apps) consoles, and all settings:
+[docs/USER_GUIDE.md](docs/USER_GUIDE.md)
 
 ## What's New in 0.2.42
 
@@ -54,8 +59,8 @@ RadioBee firmware is free software, licensed under the **GNU General Public Lice
 [LICENSE](LICENSE)). It contains code derived from [Dire Wolf](https://github.com/wb2osz/direwolf) by John Langner,
 WB2OSZ.
 
-The complete corresponding source code for each released binary is available at <http://kp4dog.org/files/>.
-You may also request it by opening an issue in this repository; this offer is valid for at least three years after
-the last release of a given version.
+The complete corresponding source code for each released binary is available on request: open an
+[issue](https://github.com/hebersoto/radiobee-releases/issues) in this repository. This written offer is valid for at
+least three years after the last release of a given version.
 
 RadioBee is a project of KP3M.

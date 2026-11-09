@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RadioBee P1 Firmware Flashing</title>
-<meta name="description" content="How to install RadioBee P1 firmware 0.2.42 (F3D31) on the ESP32 over USB.">
+<meta name="description" content="How to install RadioBee P1 firmware v0.2.42 on the ESP32 over USB.">
 <style>
 :root {
   --bg: #fbfaf7; --fg: #1d1d1b; --muted: #5f5e5a; --line: #dddbd3;
@@ -69,7 +69,7 @@ footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--line);
 
 <header>
   <h1>RadioBee P1 — How to Flash Firmware</h1>
-  <p>Firmware <strong>0.2.42 (F3D31)</strong> for the RadioBee P1 (ESP32-WROOM-32), installed over USB.</p>
+  <p>Firmware <strong>v0.2.42</strong> for the RadioBee P1 (ESP32-WROOM-32), installed over USB.</p>
 </header>
 
 <nav class="toc" aria-label="Contents">
@@ -90,12 +90,12 @@ footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--line);
 <div class="table-wrap"><table>
   <tr><th>File</th><th>Flash address</th><th>When to use it</th></tr>
   <tr>
-    <td><a href="https://github.com/hebersoto/radiobee-releases/releases/download/f3d31/RadioBee_P1_F3D31_0.2.42_update_0x10000.bin"><code>RadioBee_P1_F3D31_0.2.42_update_0x10000.bin</code></a></td>
+    <td><a href="https://github.com/hebersoto/radiobee-releases/releases/download/v0.2.42/RadioBee_P1_v0.2.42_update_0x10000.bin"><code>RadioBee_P1_v0.2.42_update_0x10000.bin</code></a></td>
     <td><strong><code>0x10000</code></strong></td>
     <td><strong>Normal update.</strong> The RadioBee already runs RadioBee firmware. Keeps your saved settings (FX.25 TX, TX level).</td>
   </tr>
   <tr>
-    <td><a href="https://github.com/hebersoto/radiobee-releases/releases/download/f3d31/RadioBee_P1_F3D31_0.2.42_full_0x0.bin"><code>RadioBee_P1_F3D31_0.2.42_full_0x0.bin</code></a></td>
+    <td><a href="https://github.com/hebersoto/radiobee-releases/releases/download/v0.2.42/RadioBee_P1_v0.2.42_full_0x0.bin"><code>RadioBee_P1_v0.2.42_full_0x0.bin</code></a></td>
     <td><strong><code>0x0</code></strong></td>
     <td>Blank or unknown ESP32, or recovery when the update file does not boot. <strong>Erases saved settings</strong> (back to defaults).</td>
   </tr>
@@ -111,8 +111,8 @@ board unable to start. To fix that, flash the full file at <code>0x0</code>.</p>
   <tr><td><code>…full_0x0.bin</code></td><td class="hash"><code>742b88fc909b9ccda52d17eedd7f96c44f74e4919135e1db1421b4d68675821e</code></td></tr>
 </table></div>
 <ul>
-  <li>Windows: <code>certutil -hashfile RadioBee_P1_F3D31_0.2.42_update_0x10000.bin SHA256</code></li>
-  <li>Mac / Linux: <code>shasum -a 256 RadioBee_P1_F3D31_0.2.42_update_0x10000.bin</code></li>
+  <li>Windows: <code>certutil -hashfile RadioBee_P1_v0.2.42_update_0x10000.bin SHA256</code></li>
+  <li>Mac / Linux: <code>shasum -a 256 RadioBee_P1_v0.2.42_update_0x10000.bin</code></li>
 </ul>
 
 <h2 id="need">2. What you need</h2>
@@ -146,7 +146,7 @@ board unable to start. To fix that, flash the full file at <code>0x0</code>.</p>
   <li>Under <strong>Program</strong>:
     <ul>
       <li><strong>Flash Address:</strong> <code>0x10000</code></li>
-      <li><strong>File:</strong> <code>RadioBee_P1_F3D31_0.2.42_update_0x10000.bin</code></li>
+      <li><strong>File:</strong> <code>RadioBee_P1_v0.2.42_update_0x10000.bin</code></li>
     </ul>
     (Full image instead: address <code>0x0</code> and the <code>full_0x0</code> file.)</li>
   <li>Click <strong>Program</strong> and wait until it reaches 100&nbsp;%.</li>
@@ -165,9 +165,9 @@ board unable to start. To fix that, flash the full file at <code>0x0</code>.</p>
 <p>Run the command in the folder that holds the <code>.bin</code> file. Replace <code>COM5</code> with your port
 (Mac: <code>/dev/cu.usbserial-0001</code>, Linux: <code>/dev/ttyUSB0</code>).</p>
 <p><strong>Update (keeps settings):</strong></p>
-<pre><code>esptool --chip esp32 -p COM5 -b 460800 write-flash 0x10000 RadioBee_P1_F3D31_0.2.42_update_0x10000.bin</code></pre>
+<pre><code>esptool --chip esp32 -p COM5 -b 460800 write-flash 0x10000 RadioBee_P1_v0.2.42_update_0x10000.bin</code></pre>
 <p><strong>Full image (erases settings):</strong></p>
-<pre><code>esptool --chip esp32 -p COM5 -b 460800 write-flash 0x0 RadioBee_P1_F3D31_0.2.42_full_0x0.bin</code></pre>
+<pre><code>esptool --chip esp32 -p COM5 -b 460800 write-flash 0x0 RadioBee_P1_v0.2.42_full_0x0.bin</code></pre>
 <div class="note"><p>With esptool version 4 or older, write <code>write_flash</code> instead of <code>write-flash</code>
 (and <code>esptool.py</code> instead of <code>esptool</code> on some installs). esptool puts the board into flash mode
 by itself and restarts it when done.</p></div>
@@ -179,7 +179,7 @@ by itself and restarts it when done.</p></div>
   <li>Download <strong>Flash Download Tools</strong> from
     <a href="https://www.espressif.com/en/support/download/other-tools">espressif.com</a> and unzip it.</li>
   <li>Start it and choose <strong>ChipType: ESP32</strong>, <strong>WorkMode: Develop</strong>, <strong>LoadMode: UART</strong>.</li>
-  <li>On the first line, tick the box, pick <code>RadioBee_P1_F3D31_0.2.42_update_0x10000.bin</code> and type
+  <li>On the first line, tick the box, pick <code>RadioBee_P1_v0.2.42_update_0x10000.bin</code> and type
     <code>0x10000</code> after <code>@</code>. (Full image: the <code>full_0x0</code> file <code>@ 0x0</code>.) Leave the other lines unticked.</li>
   <li><strong>SPI SPEED</strong> 40&nbsp;MHz, <strong>SPI MODE</strong> DIO. Choose your <strong>COM</strong> port and <strong>BAUD</strong> 460800.</li>
   <li>Click <strong>START</strong> and wait for <strong>FINISH</strong>.</li>
@@ -193,12 +193,12 @@ by itself and restarts it when done.</p></div>
   <li>Open a serial terminal on the USB COM port: <strong>115200 baud, 8N1, no flow control</strong>
     (PuTTY → <em>Serial</em>, or the Arduino IDE Serial Monitor). Default PuTTY settings are fine.</li>
   <li>Unplug and replug the board (or press EN/RST). The boot text should show:
-<pre><code>Firmware 0.2.42-revF3D31-...
+<pre><code>Firmware 0.2.42-...
 BT/BLE Name: RadioBee P1-XXXX</code></pre></li>
   <li>Press <strong><code>s</code></strong> (no Enter needed) for the status page.</li>
 </ol>
 
-<h2 id="after">7. After updating from an older version (0.2.33 / F3D22 or earlier)</h2>
+<h2 id="after">7. After updating from an older version (0.2.33 or earlier)</h2>
 <ul>
   <li><strong>BLE phone apps</strong> (e.g. aprs.fi): select the RadioBee again once. Its BLE address changed in this version.</li>
   <li><strong>Windows:</strong> classic Bluetooth now appears as its own device and can create an SPP COM port for
@@ -224,11 +224,11 @@ BT/BLE Name: RadioBee P1-XXXX</code></pre></li>
 <p>RadioBee firmware is free software under the <strong>GNU General Public License v2.0 or later</strong>. It contains
 code derived from Dire Wolf. See <a href="https://github.com/hebersoto/radiobee-releases/blob/main/LICENSE"><code>LICENSE_GPL-2.0.txt</code></a>.</p>
 <p>Complete source code for this version:
-<a href="http://kp4dog.org/files/RadioBee_P1_F3D31_0.2.42_source.ino"><code>RadioBee_P1_F3D31_0.2.42_source.ino</code></a> (on kp4dog.org)<br>
+<code>RadioBee_P1_v0.2.42_source.ino</code>, available on request: open an <a href="https://github.com/hebersoto/radiobee-releases/issues">issue</a> (offer valid for at least three years)<br>
 <span class="hash">SHA-256 <code>903ac9422d0967fc7dedad493fb4ff621652c8b0d8f1e645990d7ba728bef8b5</code></span></p>
 <p>It builds with Arduino core <strong>esp32:esp32 3.3.11</strong>, board <strong>ESP32 Dev Module</strong>, default partition scheme.</p>
 
-<footer>RadioBee P1 · firmware 0.2.42 (F3D31) · KP3M</footer>
+<footer>RadioBee P1 · firmware v0.2.42 · KP3M</footer>
 </main>
 </body>
 </html>
