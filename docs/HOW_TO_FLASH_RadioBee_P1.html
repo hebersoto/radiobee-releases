@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RadioBee P1 Firmware Flashing</title>
+<meta name="description" content="How to install RadioBee P1 firmware 0.2.42 (F3D31) on the ESP32 over USB.">
+<style>
+:root {
+  --bg: #fbfaf7; --fg: #1d1d1b; --muted: #5f5e5a; --line: #dddbd3;
+  --card: #ffffff; --code-bg: #f1efe8; --accent: #b25e00; --accent-bg: #fff4e3;
+  --warn: #a32020; --warn-bg: #fdecec; --link: #0b5cad;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #171716; --fg: #ecebe6; --muted: #a7a59d; --line: #393833;
+    --card: #1f1f1d; --code-bg: #2a2a27; --accent: #f0a345; --accent-bg: #33270f;
+    --warn: #ff8a80; --warn-bg: #3a1a1a; --link: #7db7f5;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #171716; --fg: #ecebe6; --muted: #a7a59d; --line: #393833;
+  --card: #1f1f1d; --code-bg: #2a2a27; --accent: #f0a345; --accent-bg: #33270f;
+  --warn: #ff8a80; --warn-bg: #3a1a1a; --link: #7db7f5;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+main { max-width: 820px; margin: 0 auto; padding: 32px 16px 64px; }
+header { border-bottom: 2px solid var(--accent); padding-bottom: 16px; margin-bottom: 24px; }
+header p { margin: 4px 0 0; color: var(--muted); }
+h1 { font-size: 1.9rem; line-height: 1.2; margin: 0; }
+h2 { font-size: 1.35rem; margin: 40px 0 12px; padding-top: 8px; }
+h3 { font-size: 1.05rem; margin: 24px 0 8px; }
+a { color: var(--link); }
+code, pre { font-family: ui-monospace, "SF Mono", Consolas, "Liberation Mono", monospace; font-size: 0.9em; }
+code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+pre {
+  background: var(--code-bg); padding: 12px 14px; border-radius: 6px;
+  overflow-x: auto; line-height: 1.45; margin: 8px 0 16px;
+}
+pre code { background: none; padding: 0; overflow-wrap: normal; }
+.table-wrap { overflow-x: auto; margin: 8px 0 16px; }
+table { border-collapse: collapse; width: 100%; background: var(--card); }
+th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+th { background: var(--code-bg); font-weight: 600; }
+.hash { font-size: 0.78em; word-break: break-all; }
+.note, .warn {
+  border-left: 4px solid var(--accent); background: var(--accent-bg);
+  padding: 10px 14px; border-radius: 0 6px 6px 0; margin: 12px 0 16px;
+}
+.warn { border-left-color: var(--warn); background: var(--warn-bg); }
+.note p, .warn p { margin: 0; }
+ol, ul { padding-left: 1.4em; }
+li { margin: 4px 0; }
+nav.toc { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 12px 16px; }
+nav.toc ol { margin: 0; }
+.method { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 4px 18px 8px; margin: 16px 0; }
+.tag { display: inline-block; font-size: 0.75rem; font-weight: 600; color: var(--accent);
+  border: 1px solid var(--accent); border-radius: 999px; padding: 0 8px; margin-left: 6px; vertical-align: middle; }
+footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <h1>RadioBee P1 — How to Flash Firmware</h1>
+  <p>Firmware <strong>0.2.42 (F3D31)</strong> for the RadioBee P1 (ESP32-WROOM-32), installed over USB.</p>
+</header>
+
+<nav class="toc" aria-label="Contents">
+  <ol>
+    <li><a href="#files">Pick the right file</a></li>
+    <li><a href="#need">What you need</a></li>
+    <li><a href="#web">Method A — Web flasher (easiest)</a></li>
+    <li><a href="#esptool">Method B — esptool (command line)</a></li>
+    <li><a href="#fdt">Method C — Flash Download Tool (Windows)</a></li>
+    <li><a href="#check">Check that it worked</a></li>
+    <li><a href="#after">After updating from an older version</a></li>
+    <li><a href="#trouble">Troubleshooting</a></li>
+    <li><a href="#license">License and source code</a></li>
+  </ol>
+</nav>
+
+<h2 id="files">1. Pick the right file</h2>
+<div class="table-wrap"><table>
+  <tr><th>File</th><th>Flash address</th><th>When to use it</th></tr>
+  <tr>
+    <td><a href="https://github.com/hebersoto/radiobee-releases/releases/download/f3d31/RadioBee_P1_F3D31_0.2.42_update_0x10000.bin"><code>RadioBee_P1_F3D31_0.2.42_update_0x10000.bin</code></a></td>
+    <td><strong><code>0x10000</code></strong></td>
+    <td><strong>Normal update.</strong> The RadioBee already runs RadioBee firmware. Keeps your saved settings (FX.25 TX, TX level).</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/hebersoto/radiobee-releases/releases/download/f3d31/RadioBee_P1_F3D31_0.2.42_full_0x0.bin"><code>RadioBee_P1_F3D31_0.2.42_full_0x0.bin</code></a></td>
+    <td><strong><code>0x0</code></strong></td>
+    <td>Blank or unknown ESP32, or recovery when the update file does not boot. <strong>Erases saved settings</strong> (back to defaults).</td>
+  </tr>
+</table></div>
+<p>Use the <strong>update</strong> file unless you were told otherwise. The device name (<code>RadioBee P1-XXXX</code>) never changes.</p>
+<div class="warn"><p><strong>The flash address matters.</strong> It is in each file name. A file written at the wrong address leaves the
+board unable to start. To fix that, flash the full file at <code>0x0</code>.</p></div>
+
+<h3>Check the download (optional)</h3>
+<div class="table-wrap"><table>
+  <tr><th>File</th><th>SHA-256</th></tr>
+  <tr><td><code>…update_0x10000.bin</code></td><td class="hash"><code>0c6bb231bd8cca37b52cae298f49cb238ae7bdb62b1625ddc8da120245417851</code></td></tr>
+  <tr><td><code>…full_0x0.bin</code></td><td class="hash"><code>742b88fc909b9ccda52d17eedd7f96c44f74e4919135e1db1421b4d68675821e</code></td></tr>
+</table></div>
+<ul>
+  <li>Windows: <code>certutil -hashfile RadioBee_P1_F3D31_0.2.42_update_0x10000.bin SHA256</code></li>
+  <li>Mac / Linux: <code>shasum -a 256 RadioBee_P1_F3D31_0.2.42_update_0x10000.bin</code></li>
+</ul>
+
+<h2 id="need">2. What you need</h2>
+<ul>
+  <li>A <strong>USB data cable</strong>. Some cables only charge and will not work.</li>
+  <li>The <strong>USB driver</strong> for the board's USB chip:
+    <ul>
+      <li>Most RadioBee P1 boards: <strong>Silicon Labs CP210x</strong> “USB to UART Bridge VCP” driver
+        (<a href="https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers">silabs.com</a>).
+        Windows 10/11 usually installs it automatically; Mac and Linux have it built in.</li>
+      <li>Some ESP32 DevKit boards use a <strong>CH340</strong> chip instead: install the WCH CH340 driver.</li>
+    </ul>
+  </li>
+  <li><strong>Close every program that uses the RadioBee COM port</strong> (PinPoint, PuTTY, Arduino Serial Monitor).</li>
+  <li>Then use <strong>one</strong> of the three methods below.</li>
+</ul>
+<h3>Find the port</h3>
+<ul>
+  <li><strong>Windows:</strong> Device Manager → <em>Ports (COM &amp; LPT)</em> → “Silicon Labs CP210x USB to UART Bridge (<strong>COM5</strong>)”.</li>
+  <li><strong>Mac:</strong> <code>ls /dev/cu.*</code> → <code>/dev/cu.usbserial-0001</code> or <code>/dev/cu.SLAB_USBtoUART</code>.</li>
+  <li><strong>Linux:</strong> <code>/dev/ttyUSB0</code> (your user needs to be in the <code>dialout</code> group).</li>
+</ul>
+
+<div class="method">
+<h2 id="web">3. Method A — Web flasher <span class="tag">easiest</span></h2>
+<p>Nothing to install. Works in <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong> on a computer
+(not Firefox or Safari, not phones).</p>
+<ol>
+  <li>Open <a href="https://espressif.github.io/esptool-js/">espressif.github.io/esptool-js</a>.</li>
+  <li>Plug in the RadioBee. Set <strong>Baudrate</strong> to <code>460800</code>, click <strong>Connect</strong> and pick the port.</li>
+  <li>Under <strong>Program</strong>:
+    <ul>
+      <li><strong>Flash Address:</strong> <code>0x10000</code></li>
+      <li><strong>File:</strong> <code>RadioBee_P1_F3D31_0.2.42_update_0x10000.bin</code></li>
+    </ul>
+    (Full image instead: address <code>0x0</code> and the <code>full_0x0</code> file.)</li>
+  <li>Click <strong>Program</strong> and wait until it reaches 100&nbsp;%.</li>
+  <li>Click <strong>Disconnect</strong>, then unplug and replug the RadioBee (or press its <strong>EN/RST</strong> button).</li>
+</ol>
+<div class="warn"><p><strong>Do not click “Erase Flash”.</strong> It wipes your saved settings.</p></div>
+</div>
+
+<div class="method">
+<h2 id="esptool">4. Method B — esptool <span class="tag">Windows · Mac · Linux</span></h2>
+<p>Install esptool, either:</p>
+<ul>
+  <li>with Python: <code>pip install esptool</code>, or</li>
+  <li>as a standalone program without Python, from <a href="https://github.com/espressif/esptool/releases">github.com/espressif/esptool/releases</a>.</li>
+</ul>
+<p>Run the command in the folder that holds the <code>.bin</code> file. Replace <code>COM5</code> with your port
+(Mac: <code>/dev/cu.usbserial-0001</code>, Linux: <code>/dev/ttyUSB0</code>).</p>
+<p><strong>Update (keeps settings):</strong></p>
+<pre><code>esptool --chip esp32 -p COM5 -b 460800 write-flash 0x10000 RadioBee_P1_F3D31_0.2.42_update_0x10000.bin</code></pre>
+<p><strong>Full image (erases settings):</strong></p>
+<pre><code>esptool --chip esp32 -p COM5 -b 460800 write-flash 0x0 RadioBee_P1_F3D31_0.2.42_full_0x0.bin</code></pre>
+<div class="note"><p>With esptool version 4 or older, write <code>write_flash</code> instead of <code>write-flash</code>
+(and <code>esptool.py</code> instead of <code>esptool</code> on some installs). esptool puts the board into flash mode
+by itself and restarts it when done.</p></div>
+</div>
+
+<div class="method">
+<h2 id="fdt">5. Method C — Flash Download Tool <span class="tag">Windows</span></h2>
+<ol>
+  <li>Download <strong>Flash Download Tools</strong> from
+    <a href="https://www.espressif.com/en/support/download/other-tools">espressif.com</a> and unzip it.</li>
+  <li>Start it and choose <strong>ChipType: ESP32</strong>, <strong>WorkMode: Develop</strong>, <strong>LoadMode: UART</strong>.</li>
+  <li>On the first line, tick the box, pick <code>RadioBee_P1_F3D31_0.2.42_update_0x10000.bin</code> and type
+    <code>0x10000</code> after <code>@</code>. (Full image: the <code>full_0x0</code> file <code>@ 0x0</code>.) Leave the other lines unticked.</li>
+  <li><strong>SPI SPEED</strong> 40&nbsp;MHz, <strong>SPI MODE</strong> DIO. Choose your <strong>COM</strong> port and <strong>BAUD</strong> 460800.</li>
+  <li>Click <strong>START</strong> and wait for <strong>FINISH</strong>.</li>
+  <li>Unplug and replug the RadioBee.</li>
+</ol>
+<div class="warn"><p><strong>Do not press ERASE.</strong> It wipes your saved settings.</p></div>
+</div>
+
+<h2 id="check">6. Check that it worked</h2>
+<ol>
+  <li>Open a serial terminal on the USB COM port: <strong>115200 baud, 8N1, no flow control</strong>
+    (PuTTY → <em>Serial</em>, or the Arduino IDE Serial Monitor). Default PuTTY settings are fine.</li>
+  <li>Unplug and replug the board (or press EN/RST). The boot text should show:
+<pre><code>Firmware 0.2.42-revF3D31-...
+BT/BLE Name: RadioBee P1-XXXX</code></pre></li>
+  <li>Press <strong><code>s</code></strong> (no Enter needed) for the status page.</li>
+</ol>
+
+<h2 id="after">7. After updating from an older version (0.2.33 / F3D22 or earlier)</h2>
+<ul>
+  <li><strong>BLE phone apps</strong> (e.g. aprs.fi): select the RadioBee again once. Its BLE address changed in this version.</li>
+  <li><strong>Windows:</strong> classic Bluetooth now appears as its own device and can create an SPP COM port for
+    PinPoint or PuTTY. If Windows had paired RadioBee before, remove the old RadioBee entries in
+    <em>Settings → Bluetooth &amp; devices</em> and add it again.</li>
+  <li>Classic Bluetooth apps (e.g. APRSdroid): no change needed.</li>
+  <li><strong>PuTTY</strong> (Bluetooth COM port or USB COM port): since 0.2.42 all RadioBee text lines up with PuTTY's
+    default settings; “Implicit CR in every LF” is no longer needed (it was for 0.2.40 and older).</li>
+</ul>
+
+<h2 id="trouble">8. Troubleshooting</h2>
+<div class="table-wrap"><table>
+  <tr><th>Problem</th><th>Fix</th></tr>
+  <tr><td>“Failed to connect” / “Wrong boot mode detected”</td><td>Hold the <strong>BOOT</strong> button on the RadioBee, start flashing, release BOOT when writing starts.</td></tr>
+  <tr><td>No COM port appears</td><td>Install the CP210x (or CH340) driver; try another USB cable (data, not charge-only) or another USB port.</td></tr>
+  <tr><td>“Port is busy” / “Access denied”</td><td>Close PinPoint, PuTTY, Arduino IDE or anything else using that port.</td></tr>
+  <tr><td>Flashing stops partway</td><td>Lower the baud rate to <code>115200</code> and try again.</td></tr>
+  <tr><td>Board does not start after the update file</td><td>Flash the <strong>full</strong> file at <code>0x0</code> (settings go back to defaults).</td></tr>
+  <tr><td>Web flasher shows no Connect dialog</td><td>Use Chrome or Edge on a computer; Firefox and Safari do not support Web Serial.</td></tr>
+</table></div>
+
+<h2 id="license">9. License and source code</h2>
+<p>RadioBee firmware is free software under the <strong>GNU General Public License v2.0 or later</strong>. It contains
+code derived from Dire Wolf. See <a href="https://github.com/hebersoto/radiobee-releases/blob/main/LICENSE"><code>LICENSE_GPL-2.0.txt</code></a>.</p>
+<p>Complete source code for this version:
+<a href="http://kp4dog.org/files/RadioBee_P1_F3D31_0.2.42_source.ino"><code>RadioBee_P1_F3D31_0.2.42_source.ino</code></a> (on kp4dog.org)<br>
+<span class="hash">SHA-256 <code>903ac9422d0967fc7dedad493fb4ff621652c8b0d8f1e645990d7ba728bef8b5</code></span></p>
+<p>It builds with Arduino core <strong>esp32:esp32 3.3.11</strong>, board <strong>ESP32 Dev Module</strong>, default partition scheme.</p>
+
+<footer>RadioBee P1 · firmware 0.2.42 (F3D31) · KP3M</footer>
+</main>
+</body>
+</html>
