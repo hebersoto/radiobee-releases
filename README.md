@@ -41,6 +41,7 @@ esptool --chip esp32 -p COM5 -b 460800 write-flash 0x10000 RadioBee_P1_v0.2.42_u
 
 BOOT button, LEDs, USB console, Bluetooth (SPP) and BLE (nRF apps) consoles, and all settings:
 [docs/USER_GUIDE.md](docs/USER_GUIDE.md)
+(an HTML copy is attached to each release).
 
 ## What's New in 0.2.42
 

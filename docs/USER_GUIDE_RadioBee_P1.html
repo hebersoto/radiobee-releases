@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RadioBee P1 User Guide</title>
+<meta name="description" content="How to use and configure the RadioBee P1: BOOT button, LEDs, USB, Bluetooth and BLE consoles, settings.">
+<style>
+:root {
+  --bg: #fbfaf7; --fg: #1d1d1b; --muted: #5f5e5a; --line: #dddbd3;
+  --card: #ffffff; --code-bg: #f1efe8; --accent: #b25e00; --accent-bg: #fff4e3;
+  --warn: #a32020; --warn-bg: #fdecec; --link: #0b5cad;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #171716; --fg: #ecebe6; --muted: #a7a59d; --line: #393833;
+    --card: #1f1f1d; --code-bg: #2a2a27; --accent: #f0a345; --accent-bg: #33270f;
+    --warn: #ff8a80; --warn-bg: #3a1a1a; --link: #7db7f5;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #171716; --fg: #ecebe6; --muted: #a7a59d; --line: #393833;
+  --card: #1f1f1d; --code-bg: #2a2a27; --accent: #f0a345; --accent-bg: #33270f;
+  --warn: #ff8a80; --warn-bg: #3a1a1a; --link: #7db7f5;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+main { max-width: 820px; margin: 0 auto; padding: 32px 16px 64px; }
+header { border-bottom: 2px solid var(--accent); padding-bottom: 16px; margin-bottom: 24px; }
+header p { margin: 4px 0 0; color: var(--muted); }
+h1 { font-size: 1.9rem; line-height: 1.2; margin: 0; }
+h2 { font-size: 1.35rem; margin: 40px 0 12px; padding-top: 8px; }
+h3 { font-size: 1.05rem; margin: 24px 0 8px; }
+a { color: var(--link); }
+code, pre { font-family: ui-monospace, "SF Mono", Consolas, "Liberation Mono", monospace; font-size: 0.9em; }
+code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+pre {
+  background: var(--code-bg); padding: 12px 14px; border-radius: 6px;
+  overflow-x: auto; line-height: 1.45; margin: 8px 0 16px;
+}
+pre code { background: none; padding: 0; overflow-wrap: normal; }
+.table-wrap { overflow-x: auto; margin: 8px 0 16px; }
+table { border-collapse: collapse; width: 100%; background: var(--card); }
+th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+th { background: var(--code-bg); font-weight: 600; }
+.hash { font-size: 0.78em; word-break: break-all; }
+.note, .warn {
+  border-left: 4px solid var(--accent); background: var(--accent-bg);
+  padding: 10px 14px; border-radius: 0 6px 6px 0; margin: 12px 0 16px;
+}
+.warn { border-left-color: var(--warn); background: var(--warn-bg); }
+.note p, .warn p { margin: 0; }
+ol, ul { padding-left: 1.4em; }
+li { margin: 4px 0; }
+nav.toc { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 12px 16px; }
+nav.toc ol { margin: 0; }
+.method { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 4px 18px 8px; margin: 16px 0; }
+.tag { display: inline-block; font-size: 0.75rem; font-weight: 600; color: var(--accent);
+  border: 1px solid var(--accent); border-radius: 999px; padding: 0 8px; margin-left: 6px; vertical-align: middle; }
+footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <h1>RadioBee P1 — User Guide</h1>
+  <p>Firmware <strong>v0.2.42</strong>. BOOT button, LEDs, USB console, Bluetooth (SPP) and BLE consoles, settings.
+  To install or update the firmware, see the
+  <a href="https://github.com/hebersoto/radiobee-releases/blob/main/docs/HOW_TO_FLASH_RadioBee_P1.md">flashing guide</a>.</p>
+</header>
+
+<nav class="toc" aria-label="Contents">
+  <ol>
+    <li><a href="#connections">Connections</a></li>
+    <li><a href="#leds">LEDs</a></li>
+    <li><a href="#boot">BOOT button</a></li>
+    <li><a href="#settings">Settings</a></li>
+    <li><a href="#usb">USB console</a></li>
+    <li><a href="#spp">Bluetooth (SPP) console</a></li>
+    <li><a href="#ble">BLE console (nRF apps)</a></li>
+    <li><a href="#commands">Console commands (SPP and BLE)</a></li>
+    <li><a href="#safety">Transmit safety</a></li>
+    <li><a href="#support">Support</a></li>
+  </ol>
+</nav>
+
+<h2 id="connections">1. Connections</h2>
+<ul>
+  <li><strong>Radio:</strong> TRRS cable, DigiRig Lite-compatible (Tip = radio audio out, Ring1 = TX audio to the radio,
+  Ring2 = PTT, Sleeve = ground).</li>
+  <li><strong>Power / USB:</strong> the ESP32 board's USB port. It also gives a USB serial console.</li>
+  <li><strong>Apps:</strong>
+    <ul>
+      <li>Classic Bluetooth (SPP): PinPoint APRS and other KISS programs on Windows (Bluetooth COM port), APRSdroid on Android.</li>
+      <li>BLE: aprs.fi and other apps with BLE KISS.</li>
+    </ul>
+  </li>
+</ul>
+<p>The device name is <strong><code>RadioBee P1-XXXX</code></strong> (XXXX = last 4 hex digits of the board's ID). It is the
+same for classic Bluetooth and BLE, and it never changes, not even after a factory reset.</p>
+<div class="note"><p>Only <strong>one classic Bluetooth client</strong> and <strong>one BLE client</strong> can be connected at a
+time. Disconnect the KISS app before you open a console on the same link.</p></div>
+
+<h2 id="leds">2. LEDs</h2>
+<div class="table-wrap"><table>
+  <tr><th>LED</th><th>Meaning</th></tr>
+  <tr><td>Steady on</td><td>Running, no Bluetooth client connected</td></tr>
+  <tr><td>Fast flashing</td><td>A classic Bluetooth or BLE client is connected</td></tr>
+  <tr><td>Steady on while transmitting</td><td>PTT active</td></tr>
+</table></div>
+<p>Both LEDs show the same thing.</p>
+
+<h2 id="boot">3. BOOT button</h2>
+<p>The <strong>BOOT</strong> button changes settings while the RadioBee is running. It is ignored while transmitting.</p>
+<div class="warn"><p>Do <strong>not</strong> hold BOOT while you power up or press EN/RST: that starts the ESP32 in firmware
+download mode.</p></div>
+<div class="table-wrap"><table>
+  <tr><th>Action</th><th>Result</th><th>LED answer</th></tr>
+  <tr><td>1 short press</td><td>TX audio level (TXDAC) +1, saved</td><td>1 long flash</td></tr>
+  <tr><td>2 short presses</td><td>TX audio level (TXDAC) −1, saved</td><td>2 long flashes</td></tr>
+  <tr><td>Hold about 1 s (LEDs go dark), release before 10 s</td><td>Toggle hybrid FX.25 transmit, saved</td><td>ON: 3 quick + 1 long<br>OFF: 1 long + 3 quick</td></tr>
+  <tr><td>Hold 10 s (5 very quick flashes = armed), then release</td><td><strong>Factory reset</strong> of the settings, then reboot</td><td>5 very quick flashes</td></tr>
+  <tr><td>Press at the end of the range</td><td>Level not changed</td><td>4 very quick flashes</td></tr>
+</table></div>
+<p>Factory reset sets FX.25 TX = ON and TXDAC = 10. The device name does not change.</p>
+
+<h2 id="settings">4. Settings</h2>
+<div class="table-wrap"><table>
+  <tr><th>Setting</th><th>Default</th><th>Range</th><th>Saved</th></tr>
+  <tr><td>TXDAC (TX audio level to the radio)</td><td>10</td><td>1 … 60</td><td>Yes</td></tr>
+  <tr><td>FX.25 TX (hybrid)</td><td>ON</td><td>ON / OFF</td><td>Yes</td></tr>
+  <tr><td>RX threshold</td><td>firmware default</td><td>10 … 4095</td><td>No (until reboot)</td></tr>
+</table></div>
+<ul>
+  <li><strong>TXDAC:</strong> raise or lower it until your radio's FM deviation is correct (about 3 kHz for 1200 baud packet).
+  Too high distorts the audio; too low is not decoded. Check with a second receiver or a deviation meter.</li>
+  <li><strong>FX.25 TX (hybrid):</strong> when ON, connected-mode data frames are sent as FX.25 (forward error correction);
+  APRS and all other frames are always plain AX.25. Receive always decodes AX.25 and FX.25.</li>
+</ul>
+
+<h2 id="usb">5. USB console</h2>
+<ol>
+  <li>Connect the RadioBee by USB. Use the CP210x COM port (Windows Device Manager → <em>Ports (COM &amp; LPT)</em>;
+  Mac <code>/dev/cu.usbserial-*</code>; Linux <code>/dev/ttyUSB0</code>).</li>
+  <li>Open a terminal (PuTTY → <em>Serial</em>, or the Arduino Serial Monitor): <strong>115200 baud, 8N1, no flow control</strong>.
+  PuTTY default settings work.</li>
+  <li>Press a single key, <strong>no Enter needed</strong>:</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Key</th><th>Action</th></tr>
+  <tr><td><code>s</code></td><td>Status (firmware, name, settings, connections, memory)</td></tr>
+  <tr><td><code>d</code></td><td>RX diagnostics</td></tr>
+  <tr><td><code>f</code></td><td>FX.25 diagnostics</td></tr>
+  <tr><td><code>x</code></td><td>Toggle FX.25 TX (saved)</td></tr>
+  <tr><td><code>+</code> / <code>-</code></td><td>TXDAC +1 / −1 (saved)</td></tr>
+  <tr><td><code>]</code> / <code>[</code></td><td>RX threshold +10 / −10 (not saved)</td></tr>
+  <tr><td><code>b</code></td><td>Pause BLE for 120 s (press again to resume)</td></tr>
+  <tr><td><code>?</code></td><td>Help</td></tr>
+</table></div>
+<p>Opening the USB port can restart the board; that is normal for ESP32 DevKit boards.</p>
+
+<h2 id="spp">6. Bluetooth (SPP) console</h2>
+<p>The classic Bluetooth link carries KISS for apps and also accepts text commands.</p>
+<ol>
+  <li>Pair <strong><code>RadioBee P1-XXXX</code></strong> from your PC or phone. If a PIN is asked, use <strong>1234</strong>.</li>
+  <li><strong>Windows:</strong> <em>Settings → Bluetooth &amp; devices → More Bluetooth settings → COM Ports → Add → Outgoing</em>,
+  choose RadioBee. Open that COM port in PuTTY (<em>Serial</em>, any speed). PuTTY default settings work.<br>
+  <strong>Android:</strong> use an app such as "Serial Bluetooth Terminal".</li>
+  <li>Close PinPoint, APRSdroid or any other app that uses the RadioBee over classic Bluetooth first.</li>
+  <li>Type a command (<a href="#commands">section 8</a>) and press <strong>Enter</strong>.</li>
+</ol>
+
+<h2 id="ble">7. BLE console (nRF apps)</h2>
+<p>The BLE link gives a short text console through the Nordic UART Service.</p>
+<p><strong>nRF Toolbox → UART</strong> (easiest): connect to <code>RadioBee P1-XXXX</code> and send commands as text.</p>
+<p><strong>nRF Connect:</strong></p>
+<ol>
+  <li>Scan and connect to <code>RadioBee P1-XXXX</code>.</li>
+  <li>Open the <strong>Nordic UART Service</strong> <code>6E400001-B5A3-F393-E0A9-E50E24DCCA9E</code>.</li>
+  <li>Enable notifications on <strong>TX</strong> <code>6E400003-B5A3-F393-E0A9-E50E24DCCA9E</code> (replies arrive here).</li>
+  <li>Write text (UTF-8) to <strong>RX</strong> <code>6E400002-B5A3-F393-E0A9-E50E24DCCA9E</code>, for example <code>S</code>.</li>
+</ol>
+<p>Notes:</p>
+<ul>
+  <li>Replies are short, one line per notification. <code>FULL</code> and <code>GET ALL</code> are refused over BLE; use USB or SPP for those.</li>
+  <li>Only one BLE app at a time: disconnect aprs.fi (or any other BLE app) first.</li>
+  <li>BLE apps for packet use the separate BLE KISS service <code>00000001-BA2A-46C9-AE49-01B0961F68BB</code>.</li>
+  <li>After updating from firmware 0.2.33 or older, select the RadioBee again once in BLE apps (its BLE address changed).</li>
+</ul>
+
+<h2 id="commands">8. Console commands (SPP and BLE)</h2>
+<p>Commands are not case-sensitive. An optional <code>RB </code> prefix is accepted (<code>RB S</code> = <code>S</code>).
+Each reply ends with a line starting with <code>OK</code> or <code>ERR</code>. Changes are refused while transmitting.</p>
+<div class="table-wrap"><table>
+  <tr><th>Command</th><th>Action</th></tr>
+  <tr><td><code>S</code> or <code>STATUS</code> [<code>FULL</code>]</td><td>Status</td></tr>
+  <tr><td><code>D</code> or <code>DIAG</code> [<code>FULL</code>]</td><td>RX diagnostics</td></tr>
+  <tr><td><code>F</code> or <code>FX</code> [<code>FULL</code>]</td><td>FX.25 diagnostics</td></tr>
+  <tr><td><code>I</code> or <code>INFO</code> [<code>FULL</code>]</td><td>Device information</td></tr>
+  <tr><td><code>GET</code> [<code>ALL</code>]</td><td>Show settings</td></tr>
+  <tr><td><code>GET TXDAC</code> / <code>FX25</code> / <code>RXTHR</code> / <code>ID</code> / <code>NAME</code> / <code>MAC</code> / <code>FW</code></td><td>Show one value</td></tr>
+  <tr><td><code>SET TXDAC &lt;1..60&gt;</code></td><td>Set TX audio level (saved)</td></tr>
+  <tr><td><code>SET FX25 ON</code> / <code>OFF</code> / <code>TOGGLE</code></td><td>FX.25 TX (saved)</td></tr>
+  <tr><td><code>SET RXTHR &lt;10..4095&gt;</code></td><td>RX threshold (not saved)</td></tr>
+  <tr><td><code>X</code>, <code>+</code>, <code>-</code>, <code>]</code>, <code>[</code></td><td>Same as the USB keys</td></tr>
+  <tr><td><code>FACTORY RESET</code>, then <code>FACTORY RESET CONFIRM</code></td><td>Factory reset of the settings (confirm within 30 s on the same link)</td></tr>
+  <tr><td><code>?</code> or <code>HELP</code></td><td>Command list</td></tr>
+</table></div>
+<p>Example:</p>
+<pre><code>SET TXDAC 12
+OK TXDAC=12 SAVED</code></pre>
+
+<h2 id="safety">9. Transmit safety</h2>
+<ul>
+  <li>A transmission is cut after <strong>5 seconds</strong> (time-out timer).</li>
+  <li>Transmissions longer than 4 seconds are rejected before keying.</li>
+  <li>After 3 time-outs within 5 minutes, transmit is locked out until the RadioBee is restarted (power off/on or EN/RST).</li>
+</ul>
+
+<h2 id="support">10. Support</h2>
+<p>Open an <a href="https://github.com/hebersoto/radiobee-releases/issues">issue</a> with the firmware version (USB
+<code>s</code> or console <code>GET FW</code>), the app and radio you use, and what happened.</p>
+
+<footer>RadioBee P1 · firmware v0.2.42 · KP3M</footer>
+</main>
+</body>
+</html>
