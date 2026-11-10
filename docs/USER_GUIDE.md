@@ -4,6 +4,8 @@ How to use and configure a RadioBee P1: the BOOT button, the LEDs, the USB conso
 Bluetooth Low Energy (BLE) consoles. To install or update the firmware, see
 [HOW_TO_FLASH_RadioBee_P1.md](HOW_TO_FLASH_RadioBee_P1.md).
 
+<p align="center"><img src="images/RadioBee_P1.jpg" alt="RadioBee P1 in its enclosure" width="600"></p>
+
 ## 1. Connections
 
 - **Radio:** TRRS cable, DigiRig Lite-compatible (Tip = radio audio out, Ring1 = TX audio to the radio,
