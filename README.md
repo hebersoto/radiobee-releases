@@ -13,9 +13,11 @@ ESP32-WROOM-32. It connects a handheld or mobile radio (TRRS cable, DigiRig Lite
 
 | | |
 |---|---|
-| **Apps** | PinPoint APRS (Windows), APRSdroid (Android), aprs.fi (BLE), PuTTY |
+| **APRS apps** | PinPoint APRS (Windows), APRSdroid (Android), aprs.fi (BLE) |
+| **Winlink** | Winlink Express, RadioMail, WoAD |
+| **Terminal** | PuTTY |
 | **Handhelds** | Yaesu FT3D, AnyTone AT-D878UV, Baofeng UV-5R, Baofeng UV-17 Pro Max |
-| **Mobiles** | Yaesu FTM-400, Alinco DR-135, TYT TH-9000D, Motorola CDM series, Motorola MaxTrac 300 |
+| **Mobiles** | Yaesu FTM-400, Alinco DR-135, TYT TH-9000D, Motorola CDM750, Motorola MaxTrac 300 |
 
 And others. Set the TX audio level (TXDAC) for each radio; see the [user guide](docs/USER_GUIDE.md).
 
