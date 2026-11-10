@@ -101,8 +101,11 @@ footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--line);
   </tr>
 </table></div>
 <p>Use the <strong>update</strong> file unless you were told otherwise. The device name (<code>RadioBee P1-XXXX</code>) never changes.</p>
+<p><strong>New or blank ESP32</strong> (never had RadioBee firmware, or its flash was erased): use the <strong>full</strong>
+file at <code>0x0</code>. The update file alone does not start on it.</p>
 <div class="warn"><p><strong>The flash address matters.</strong> It is in each file name. A file written at the wrong address leaves the
-board unable to start. To fix that, flash the full file at <code>0x0</code>.</p></div>
+board unable to start. To fix that, flash the full file at <code>0x0</code>.<br>The web flasher fills in <code>0x1000</code> by itself:
+that address is wrong for both RadioBee files, so always change it.</p></div>
 
 <h3>Check the download (optional)</h3>
 <div class="table-wrap"><table>
@@ -142,14 +145,19 @@ board unable to start. To fix that, flash the full file at <code>0x0</code>.</p>
 (not Firefox or Safari, not phones).</p>
 <ol>
   <li>Open <a href="https://espressif.github.io/esptool-js/">espressif.github.io/esptool-js</a>.</li>
-  <li>Plug in the RadioBee. Set <strong>Baudrate</strong> to <code>460800</code>, click <strong>Connect</strong> and pick the port.</li>
-  <li>Under <strong>Program</strong>:
+  <li>Plug in the RadioBee. Set <strong>Baudrate</strong> to <code>460800</code> <strong>before</strong> you click
+    <strong>Connect</strong> (the flasher uses it when it connects), then click <strong>Connect</strong> and pick the port.
+    If you get “serial noise or corruption” errors, reload the page and use <code>115200</code>.</li>
+  <li>Under <strong>Program</strong>, keep <strong>one row</strong> only (remove any extra rows):
     <ul>
-      <li><strong>Flash Address:</strong> <code>0x10000</code></li>
+      <li><strong>Flash Address:</strong> delete the default <code>0x1000</code> and type <code>0x10000</code></li>
       <li><strong>File:</strong> <code>RadioBee_P1_v0.2.42_update_0x10000.bin</code></li>
     </ul>
-    (Full image instead: address <code>0x0</code> and the <code>full_0x0</code> file.)</li>
-  <li>Click <strong>Program</strong> and wait until it reaches 100&nbsp;%.</li>
+    (Full image instead: address <code>0x0</code> and the <code>full_0x0</code> file, about 4&nbsp;MB.)</li>
+  <li>Click <strong>Program</strong>. The first new line must be <code>Compressed 1203472 bytes ...</code> for the update file
+    (<code>Compressed 4194304 bytes ...</code> for the full file). If it shows the other number, close the page and check step 3.</li>
+  <li>Wait for <code>Wrote ... at 0x10000</code> (full file: <code>at 0x0</code>) and <code>Hash of data verified</code>.
+    If the log says <code>at 0x1000</code>, the address was wrong: flash again with the right address.</li>
   <li>Click <strong>Disconnect</strong>, then unplug and replug the RadioBee (or press its <strong>EN/RST</strong> button).</li>
 </ol>
 <div class="warn"><p><strong>Do not click “Erase Flash”.</strong> It wipes your saved settings.</p></div>
@@ -216,7 +224,9 @@ BT/BLE Name: RadioBee P1-XXXX</code></pre></li>
   <tr><td>No COM port appears</td><td>Install the CP210x (or CH340) driver; try another USB cable (data, not charge-only) or another USB port.</td></tr>
   <tr><td>“Port is busy” / “Access denied”</td><td>Close PinPoint, PuTTY, Arduino IDE or anything else using that port.</td></tr>
   <tr><td>Flashing stops partway</td><td>Lower the baud rate to <code>115200</code> and try again.</td></tr>
-  <tr><td>Board does not start after the update file</td><td>Flash the <strong>full</strong> file at <code>0x0</code> (settings go back to defaults).</td></tr>
+  <tr><td>“Serial data stream stopped” / “Invalid head of packet” (serial noise or corruption)</td><td>Reload the web flasher, set the baud rate to <code>115200</code> <strong>before</strong> Connect, plug the board straight into the computer (no hub), try a short data cable. If the error came after <code>Wrote ... bytes</code>, press EN/RST and check the boot text (section 6): the write is usually complete. If the board does not start, flash again.</td></tr>
+  <tr><td>Board does not start; the flasher log said <code>at 0x1000</code></td><td>The file went to the web flasher's default address. Flash the <strong>full</strong> file at <code>0x0</code>.</td></tr>
+  <tr><td>Board does not start after the update file, or it is a new ESP32</td><td>Flash the <strong>full</strong> file at <code>0x0</code> (settings go back to defaults).</td></tr>
   <tr><td>Web flasher shows no Connect dialog</td><td>Use Chrome or Edge on a computer; Firefox and Safari do not support Web Serial.</td></tr>
 </table></div>
 

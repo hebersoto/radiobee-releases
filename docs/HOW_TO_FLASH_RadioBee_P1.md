@@ -12,8 +12,12 @@ Download page: <https://github.com/hebersoto/radiobee-releases/releases/latest>
 
 Use the **update** file unless you were told otherwise. The device name (`RadioBee P1-XXXX`) never changes.
 
+**New or blank ESP32** (never had RadioBee firmware, or its flash was erased): use the **full** file at `0x0`.
+The update file alone does not start on it.
+
 > **Flash address matters.** The address is in each file name. Writing a file at the wrong address leaves the board
-> unable to start (fix: flash the full file at `0x0`).
+> unable to start (fix: flash the full file at `0x0`). The web flasher fills in `0x1000` by itself: that address is
+> wrong for both RadioBee files, so always change it.
 
 ### Check the download (optional)
 
@@ -47,15 +51,20 @@ Use the **update** file unless you were told otherwise. The device name (`RadioB
 Works in **Google Chrome** or **Microsoft Edge** on a computer (not Firefox or Safari, not phones).
 
 1. Open <https://espressif.github.io/esptool-js/>.
-2. Plug in the RadioBee. Set **Baudrate** to `460800`, click **Connect** and pick the port.
-3. Under **Program**:
-   - **Flash Address:** `0x10000`
+2. Plug in the RadioBee. Set **Baudrate** to `460800` **before** you click **Connect** (the flasher uses it when it
+   connects), then click **Connect** and pick the port. If you get "serial noise or corruption" errors, reload
+   the page and use `115200`.
+3. Under **Program**, keep **one row** only (remove any extra rows):
+   - **Flash Address:** delete the default `0x1000` and type `0x10000`
    - **File:** `RadioBee_P1_v0.2.42_update_0x10000.bin`
 
-   (Full image instead: address `0x0` and the `full_0x0` file.)
-4. Click **Program** and wait until it reaches 100 %.
+   (Full image instead: address `0x0` and the `full_0x0` file, about 4 MB.)
+4. Click **Program**. The first new line must be `Compressed 1203472 bytes ...` for the update file
+   (`Compressed 4194304 bytes ...` for the full file). If it shows the other number, close the page and check step 3.
    **Do not click "Erase Flash"**: that wipes your saved settings.
-5. Click **Disconnect**, then unplug and replug the RadioBee (or press its **EN/RST** button).
+5. Wait for `Wrote ... at 0x10000` (full file: `at 0x0`) and `Hash of data verified`.
+   If the log says `at 0x1000`, the address was wrong: flash again with the right address.
+6. Click **Disconnect**, then unplug and replug the RadioBee (or press its **EN/RST** button).
 
 ## 4. Method B — esptool (command line: Windows, Mac, Linux)
 
@@ -124,7 +133,9 @@ esptool resets the board into flash mode by itself and restarts it when it is do
 | No COM port appears | Install the CP210x (or CH340) driver; try another USB cable (data, not charge-only) or another USB port. |
 | "Port is busy" / "Access denied" | Close PinPoint, PuTTY, Arduino IDE or anything else using that port. |
 | Flashing stops partway | Lower the baud rate to `115200` and try again. |
-| Board does not start after the update file | Flash the **full** file at `0x0` (settings go back to defaults). |
+| "Serial data stream stopped" / "Invalid head of packet" (serial noise or corruption) | Reload the web flasher, set the baud rate to `115200` **before** Connect, plug the board straight into the computer (no hub), try a short data cable. If the error came after `Wrote ... bytes`, press EN/RST and check the boot text (section 6): the write is usually complete. If the board does not start, flash again. |
+| Board does not start; the flasher log said `at 0x1000` | The file went to the web flasher's default address. Flash the **full** file at `0x0`. |
+| Board does not start after the update file, or it is a new ESP32 | Flash the **full** file at `0x0` (settings go back to defaults). |
 | Web flasher shows no Connect dialog | Use Chrome or Edge on a computer; Firefox and Safari do not support Web Serial. |
 
 ## 9. License and source code
