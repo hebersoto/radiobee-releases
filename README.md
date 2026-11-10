@@ -9,6 +9,16 @@ ESP32-WROOM-32. It connects a handheld or mobile radio (TRRS cable, DigiRig Lite
 - PTT safety: 5 s transmit time-out, over-long transmissions rejected, lockout after repeated trips.
 - Settings saved on the device (FX.25 TX on/off, TX audio level).
 
+### Tested with
+
+| | |
+|---|---|
+| **Apps** | PinPoint APRS (Windows), APRSdroid (Android), aprs.fi (BLE), PuTTY |
+| **Handhelds** | Yaesu FT3D, AnyTone AT-D878UV, Baofeng UV-5R, Baofeng UV-17 Pro Max |
+| **Mobiles** | Yaesu FTM-400, Alinco DR-135, TYT TH-9000D, Motorola CDM series, Motorola MaxTrac 300 |
+
+And others. Set the TX audio level (TXDAC) for each radio; see the [user guide](docs/USER_GUIDE.md).
+
 This repository contains:
 
 - Compiled firmware binaries (on the [Releases](https://github.com/hebersoto/radiobee-releases/releases) page)
