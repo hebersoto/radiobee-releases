@@ -1,5 +1,7 @@
 # RadioBee P1
 
+<p align="center"><img src="docs/images/RadioBee_P1.jpg" alt="RadioBee P1 in its enclosure" width="600"></p>
+
 **RadioBee P1** is a Bluetooth / Bluetooth Low Energy KISS TNC for amateur packet radio, APRS and Winlink, built on an
 ESP32-WROOM-32. It connects a handheld or mobile radio (TRRS cable, DigiRig Lite-compatible) to phone and PC apps:
 
