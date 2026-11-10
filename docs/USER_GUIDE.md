@@ -16,6 +16,18 @@ Bluetooth Low Energy (BLE) consoles. To install or update the firmware, see
 The device name is **`RadioBee P1-XXXX`** (XXXX = last 4 hex digits of the board's ID). It is the same for classic
 Bluetooth and BLE, and it never changes, not even after a factory reset.
 
+### Tested with
+
+| | |
+|---|---|
+| **APRS apps** | PinPoint APRS (Windows), APRSdroid (Android), aprs.fi (BLE) |
+| **Winlink** | Winlink Express, RadioMail, WoAD |
+| **Terminal** | PuTTY |
+| **Handhelds** | Yaesu FT3D, AnyTone AT-D878UV, Baofeng UV-5R, Baofeng UV-17 Pro Max |
+| **Mobiles** | Yaesu FTM-400, Alinco DR-135, TYT TH-9000D, Motorola CDM750, Motorola MaxTrac 300 |
+
+And others. Set the TX audio level (TXDAC) for each radio (section 4).
+
 Only **one classic Bluetooth client** and **one BLE client** can be connected at a time. Disconnect the KISS app
 before you open a console on the same link.
 
