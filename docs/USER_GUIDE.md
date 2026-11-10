@@ -41,7 +41,7 @@ before you open a console on the same link.
 | Fast flashing | A classic Bluetooth or BLE client is connected |
 | Steady on while transmitting | PTT active |
 
-Both LEDs show the same thing.
+The status LED is the blue LED on the ESP32 board.
 
 ## 3. BOOT button
 
