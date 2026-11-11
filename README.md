@@ -62,6 +62,7 @@ BOOT button, LEDs, USB console, Bluetooth (SPP) and BLE (nRF apps) consoles, and
 
 Parts list, wiring diagrams (RX, TX, PTT, TRRS jack), wire list and checks:
 [docs/BUILD_GUIDE_RadioBee_P1.md](docs/BUILD_GUIDE_RadioBee_P1.md)
+(an HTML copy is attached to each release).
 
 > **Kits:** parts, unassembled kits and assembled kits will be available at
 > [kp4pra.praprs.com](https://kp4pra.praprs.com/) by December 2026.

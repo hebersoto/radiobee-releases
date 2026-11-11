@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RadioBee P1 Build Guide</title>
+<meta name="description" content="RadioBee P1 parts list and how to wire the ESP32 DevKit, TRRS jack, RX, TX and PTT circuits.">
+<style>
+:root {
+  --bg: #fbfaf7; --fg: #1d1d1b; --muted: #5f5e5a; --line: #dddbd3;
+  --card: #ffffff; --code-bg: #f1efe8; --accent: #b25e00; --accent-bg: #fff4e3;
+  --warn: #a32020; --warn-bg: #fdecec; --link: #0b5cad;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #171716; --fg: #ecebe6; --muted: #a7a59d; --line: #393833;
+    --card: #1f1f1d; --code-bg: #2a2a27; --accent: #f0a345; --accent-bg: #33270f;
+    --warn: #ff8a80; --warn-bg: #3a1a1a; --link: #7db7f5;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #171716; --fg: #ecebe6; --muted: #a7a59d; --line: #393833;
+  --card: #1f1f1d; --code-bg: #2a2a27; --accent: #f0a345; --accent-bg: #33270f;
+  --warn: #ff8a80; --warn-bg: #3a1a1a; --link: #7db7f5;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+main { max-width: 820px; margin: 0 auto; padding: 32px 16px 64px; }
+header { border-bottom: 2px solid var(--accent); padding-bottom: 16px; margin-bottom: 24px; }
+header p { margin: 4px 0 0; color: var(--muted); }
+h1 { font-size: 1.9rem; line-height: 1.2; margin: 0; }
+h2 { font-size: 1.35rem; margin: 40px 0 12px; padding-top: 8px; }
+h3 { font-size: 1.05rem; margin: 24px 0 8px; }
+a { color: var(--link); }
+code, pre { font-family: ui-monospace, "SF Mono", Consolas, "Liberation Mono", monospace; font-size: 0.9em; }
+code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+pre {
+  background: var(--code-bg); padding: 12px 14px; border-radius: 6px;
+  overflow-x: auto; line-height: 1.45; margin: 8px 0 16px;
+}
+pre code { background: none; padding: 0; overflow-wrap: normal; }
+.table-wrap { overflow-x: auto; margin: 8px 0 16px; }
+table { border-collapse: collapse; width: 100%; background: var(--card); }
+th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+th { background: var(--code-bg); font-weight: 600; }
+.hash { font-size: 0.78em; word-break: break-all; }
+.note, .warn {
+  border-left: 4px solid var(--accent); background: var(--accent-bg);
+  padding: 10px 14px; border-radius: 0 6px 6px 0; margin: 12px 0 16px;
+}
+.warn { border-left-color: var(--warn); background: var(--warn-bg); }
+.note p, .warn p { margin: 0; }
+ol, ul { padding-left: 1.4em; }
+li { margin: 4px 0; }
+nav.toc { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 12px 16px; }
+nav.toc ol { margin: 0; }
+.method { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 4px 18px 8px; margin: 16px 0; }
+.tag { display: inline-block; font-size: 0.75rem; font-weight: 600; color: var(--accent);
+  border: 1px solid var(--accent); border-radius: 999px; padding: 0 8px; margin-left: 6px; vertical-align: middle; }
+footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <h1>RadioBee P1 — Parts List and Build Guide</h1>
+  <p>How to build the RadioBee P1 radio interface: an ESP32-WROOM-32 DevKit board, a 3.5 mm TRRS jack and 14 small parts, hand-wired with hook-up wire. After building, install the firmware with <a href="https://github.com/hebersoto/radiobee-releases/blob/main/docs/HOW_TO_FLASH_RadioBee_P1.md">HOW_TO_FLASH_RadioBee_P1.md</a> and see the <a href="https://github.com/hebersoto/radiobee-releases/blob/main/docs/USER_GUIDE.md">user guide</a>.</p>
+</header>
+
+<div class="note"><p><strong>Kits:</strong> parts, unassembled kits and assembled kits will be available at <a href="https://kp4pra.praprs.com/">kp4pra.praprs.com</a> by December 2026.</p></div>
+
+<p style="text-align:center;margin:16px 0;"><img src="https://raw.githubusercontent.com/hebersoto/radiobee-releases/main/docs/images/RadioBee_P1.jpg" alt="RadioBee P1 in its enclosure" width="600"
+  style="max-width:100%;height:auto;border-radius:8px;border:1px solid var(--line);"></p>
+
+<nav class="toc" aria-label="Contents">
+  <ol>
+    <li><a href="#parts-list">Parts list</a></li>
+    <li><a href="#esp32-devkit-pins-used">ESP32 DevKit pins used</a></li>
+    <li><a href="#trrs-jack-female-parts-soldered-directly-on-the-lugs">TRRS jack (female) — parts soldered directly on the lugs</a></li>
+    <li><a href="#rx-audio-radio-gpio34">RX audio (radio → GPIO34)</a></li>
+    <li><a href="#tx-audio-gpio25-radio">TX audio (GPIO25 → radio)</a></li>
+    <li><a href="#ptt-gpio27-radio-ptt">PTT (GPIO27 → radio PTT)</a></li>
+    <li><a href="#ground">Ground</a></li>
+    <li><a href="#wire-list-from-to">Wire list (from → to)</a></li>
+    <li><a href="#checks-after-building">Checks after building</a></li>
+    <li><a href="#support">Support</a></li>
+  </ol>
+</nav>
+
+<div class="warn"><p><strong>Verify before you solder</strong></p>
+<ul><li><strong>TRRS jack lugs:</strong> the lug numbers (1, 2, 3, 4 / J) differ between jack makers. Plug a TRRS plug in and check with a meter (continuity) which lug goes to Tip, Ring 1, Ring 2 and Sleeve.</li><li><strong>Transistor pins:</strong> BC547 is usually C-B-E, 2N3904 / 2N2222 / PN2222A are usually E-B-C. Check your part with its datasheet or the meter's diode / hFE test before wiring.</li></ul></div>
+
+<h2 id="parts-list">1. Parts list</h2>
+
+<div class="table-wrap"><table>
+  <tr><th>&#10003;</th><th>Ref</th><th>Qty</th><th>Value</th><th>Marking / how to recognize it</th><th>Where it goes</th></tr>
+  <tr><td>&#9744;</td><td>DevKit</td><td>1</td><td>ESP32-WROOM-32 DevKit, 38-pin, CP2102 USB</td><td>BOOT + EN buttons, blue LED (status LED)</td><td>—</td></tr>
+  <tr><td>&#9744;</td><td>J1</td><td>1</td><td>3.5 mm TRRS female jack, 4-pole</td><td>4 contacts (Tip / Ring 1 / Ring 2 / Sleeve)</td><td>Radio cable</td></tr>
+  <tr><td>&#9744;</td><td>Q1</td><td>1</td><td>BC547 NPN transistor, TO-92</td><td>"BC547" (2N2222 / 2N3904 work, different pinout)</td><td>PTT switch</td></tr>
+  <tr><td>&#9744;</td><td>C1</td><td>1</td><td><strong>47 pF</strong> ceramic, C0G / NP0</td><td>"470" or "47"</td><td>Tip lug → Sleeve lug</td></tr>
+  <tr><td>&#9744;</td><td>C2</td><td>1</td><td><strong>1 nF</strong> ceramic</td><td>"102"</td><td>Ring 1 lug → Sleeve lug</td></tr>
+  <tr><td>&#9744;</td><td>C3</td><td>1</td><td><strong>1 nF</strong> ceramic</td><td>"102"</td><td>Ring 2 lug → Sleeve lug</td></tr>
+  <tr><td>&#9744;</td><td>C4</td><td>1</td><td><strong>10 µF</strong> electrolytic, 16 V or more</td><td>can with (−) stripe, <strong>polarized</strong></td><td>Tip → R1, <strong>(−) toward Tip</strong></td></tr>
+  <tr><td>&#9744;</td><td>C5</td><td>1</td><td><strong>1 µF</strong> film, 63 V</td><td>"105", no polarity</td><td>GPIO25 → R6</td></tr>
+  <tr><td>&#9744;</td><td>C6</td><td>1</td><td><strong>1 nF</strong> ceramic</td><td>"102"</td><td>Q1 base → GND</td></tr>
+  <tr><td>&#9744;</td><td>R1</td><td>1</td><td><strong>1 kΩ</strong> ¼ W</td><td>brown black red</td><td>C4 (+) → GPIO34 node</td></tr>
+  <tr><td>&#9744;</td><td>R2</td><td>1</td><td><strong>10 kΩ</strong> ¼ W</td><td>brown black orange</td><td>GPIO34 node → 3V3</td></tr>
+  <tr><td>&#9744;</td><td>R3</td><td>1</td><td><strong>10 kΩ</strong> ¼ W</td><td>brown black orange</td><td>GPIO34 node → GND</td></tr>
+  <tr><td>&#9744;</td><td>R4</td><td>1</td><td><strong>2.2 kΩ</strong> ¼ W</td><td>red red red</td><td>GPIO27 → Q1 base</td></tr>
+  <tr><td>&#9744;</td><td>R5</td><td>1</td><td><strong>100 kΩ</strong> ¼ W</td><td>brown black yellow</td><td>Q1 base → GND</td></tr>
+  <tr><td>&#9744;</td><td>R6</td><td>1</td><td><strong>330 Ω</strong> ¼ W</td><td>orange orange brown</td><td>C5 → Ring 1 lug (at the jack)</td></tr>
+  <tr><td>&#9744;</td><td>R7</td><td>1</td><td><strong>100 Ω</strong> ¼ W</td><td>brown black brown</td><td>Q1 collector → Ring 2 lug</td></tr>
+  <tr><td>&#9744;</td><td>—</td><td>—</td><td>Hook-up wire, about 30 cm</td><td>thin, solid or stranded</td><td>—</td></tr>
+</table></div>
+
+<p><strong>Count check:</strong> 6 capacitors (1 × 47 pF, 3 × 1 nF, 1 × 10 µF, 1 × 1 µF), 7 resistors (100, 330, 1k, 2.2k, 10k, 10k, 100k), 1 transistor, 1 jack, 1 DevKit.</p>
+
+<p>Parts, unassembled kits and assembled kits: <a href="https://kp4pra.praprs.com/">kp4pra.praprs.com</a> (by December 2026).</p>
+
+<p><strong>Also needed (not in the kit):</strong></p>
+
+<ul><li>Radio cable, TRRS, <strong>DigiRig Lite-compatible</strong>, for your radio.</li><li>USB cable for the DevKit (a <strong>data</strong> cable, not charge-only).</li><li>Optional: 3D-printed enclosure (top cover + snap-fit bottom).</li></ul>
+
+<p><strong>Tools:</strong> soldering iron (25 W is enough), solder, side cutters, wire stripper, multimeter.</p>
+
+<h2 id="esp32-devkit-pins-used">2. ESP32 DevKit pins used</h2>
+
+<div class="table-wrap"><table>
+  <tr><th>DevKit pin</th><th>Function</th><th>Connects to</th></tr>
+  <tr><td>GPIO25 (DAC1)</td><td>TX audio out</td><td>C5</td></tr>
+  <tr><td>GPIO34 (ADC1_CH6)</td><td>RX audio in</td><td>R1 / R2 / R3 node</td></tr>
+  <tr><td>GPIO27</td><td>PTT drive</td><td>R4</td></tr>
+  <tr><td>3V3</td><td>RX bias supply</td><td>R2</td></tr>
+  <tr><td>GND</td><td>Common ground</td><td>R3, R5, C6, Q1 emitter, J1 Sleeve</td></tr>
+</table></div>
+
+<p>The status LED (GPIO2, blue LED) and the BOOT button (GPIO0) are already on the DevKit: nothing to wire. Leave all other pins unconnected.</p>
+
+<h2 id="trrs-jack-female-parts-soldered-directly-on-the-lugs">3. TRRS jack (female) — parts soldered directly on the lugs</h2>
+
+<p>Solder these three capacitors <strong>on the jack lugs themselves</strong>, leads as short as possible, each to the Sleeve (GND) lug.</p>
+
+<pre><code>TRRS Female
+============================
+
+TIP / RX (2)
+   |
+  47pF  (C1)
+   |
+  GND
+
+
+R1 / TX (3)
+   |
+  1nF   (C2)
+   |
+  GND
+
+
+R2 / PTT (4)
+   |
+  1nF   (C3)
+   |
+  GND
+
+GND - (1) (J) = Sleeve</code></pre>
+
+<p>Also on the jack:</p>
+
+<ul><li><strong>R6 330 Ω</strong> soldered to the <strong>Ring 1 lug</strong> (TX audio arrives through R6).</li><li><strong>R7 100 Ω</strong> soldered to the <strong>Ring 2 lug</strong> (PTT arrives through R7).</li><li><strong>One short ground wire</strong> from the Sleeve lug to DevKit <strong>GND</strong>.</li></ul>
+
+<div class="table-wrap"><table>
+  <tr><th>TRRS contact</th><th>Function</th><th>Lug (example, verify)</th></tr>
+  <tr><td>Tip</td><td>Radio audio out → RadioBee RX</td><td>2</td></tr>
+  <tr><td>Ring 1</td><td>RadioBee TX audio → radio mic in</td><td>3</td></tr>
+  <tr><td>Ring 2</td><td>PTT (pulled to GND to transmit)</td><td>4</td></tr>
+  <tr><td>Sleeve</td><td>Ground</td><td>1 (J)</td></tr>
+</table></div>
+
+<h2 id="rx-audio-radio-gpio34">4. RX audio (radio → GPIO34)</h2>
+
+<pre><code>                                          3V3
+                                           |
+                                          10k (R2)
+                                           |
+TIP (2) --+-- (-) 10uF (+) --- 1k ---------+--------- GPIO34
+          |       (C4)        (R1)         |
+         47pF (C1)                        10k (R3)
+          |                                |
+         GND                              GND</code></pre>
+
+<ol><li><strong>C1 47 pF</strong>: at the jack, Tip lug → Sleeve lug (section 3).</li><li><strong>C4 10 µF</strong>: (−) lead to the Tip lug wire, (+) lead toward R1. The (−) side is marked with a stripe on the can.</li><li><strong>R1 1 kΩ</strong>: from C4 (+) to the <strong>bias node</strong>.</li><li><strong>Bias node</strong> (close to the DevKit): R1, R2, R3 and a short wire to <strong>GPIO34</strong>.</li><li><strong>R2 10 kΩ</strong>: bias node → <strong>3V3</strong>.</li><li><strong>R3 10 kΩ</strong>: bias node → <strong>GND</strong>.</li></ol>
+
+<p>Check: with no radio connected and the board powered, GPIO34 to GND ≈ <strong>1.65 V</strong>.</p>
+
+<h2 id="tx-audio-gpio25-radio">5. TX audio (GPIO25 → radio)</h2>
+
+<pre><code>GPIO25 --- 1uF film (C5) --- 330R (R6) --- RING1 / TX (3)
+                                                  |
+                                                 1nF (C2)
+                                                  |
+                                                 GND</code></pre>
+
+<ol><li><strong>C5 1 µF film</strong>: one lead to <strong>GPIO25</strong> (short wire), other lead to the wire going to the jack. No polarity.</li><li><strong>R6 330 Ω</strong>: at the jack, one lead on the <strong>Ring 1 lug</strong>, the other to the wire from C5.</li><li><strong>C2 1 nF</strong>: at the jack, Ring 1 lug → Sleeve lug (section 3), on the jack side of R6.</li></ol>
+
+<p>R6 and C2 keep the radio's RF out of the TX audio. The audio level is set in firmware (TXDAC, default 10); set it for correct FM deviation, not by ear.</p>
+
+<h2 id="ptt-gpio27-radio-ptt">6. PTT (GPIO27 → radio PTT)</h2>
+
+<pre><code>                                  RING2 / PTT (4) --- 1nF (C3) --- GND
+                                        |
+                                      100R (R7)
+                                        |
+                                        C
+GPIO27 --- 2.2k (R4) ---+------------ B    Q1 BC547
+                        |               E
+                        |               |
+                        |              GND
+                        |
+                        +--- 100k (R5) --- GND
+                        |
+                        +--- 1nF  (C6) --- GND   (beside Q1)</code></pre>
+
+<ol><li><strong>Q1</strong> near the DevKit. Identify B, C and E on <strong>your</strong> part first (see the warning at the top).</li><li><strong>R4 2.2 kΩ</strong>: GPIO27 → Q1 base.</li><li><strong>R5 100 kΩ</strong> and <strong>C6 1 nF</strong>: both from Q1 base to GND, right at the transistor.</li><li><strong>Q1 emitter</strong> → GND.</li><li><strong>Q1 collector</strong> → wire to the jack → <strong>R7 100 Ω</strong> on the <strong>Ring 2 lug</strong>.</li><li><strong>C3 1 nF</strong>: at the jack, Ring 2 lug → Sleeve lug (section 3).</li></ol>
+
+<p>GPIO27 HIGH turns Q1 on and pulls the radio's PTT line to ground. The firmware limits each transmission to 5 s.</p>
+
+<h2 id="ground">7. Ground</h2>
+
+<p>All grounds meet at DevKit <strong>GND</strong>: R3, R5, C6, Q1 emitter and the jack <strong>Sleeve</strong> lug. The radio and the RadioBee must share this ground, otherwise PTT and audio do not work.</p>
+
+<h2 id="wire-list-from-to">8. Wire list (from → to)</h2>
+
+<div class="table-wrap"><table>
+  <tr><th>#</th><th>From</th><th>To</th><th>Part in between</th></tr>
+  <tr><td>1</td><td>J1 Tip lug</td><td>J1 Sleeve lug</td><td>C1 47 pF</td></tr>
+  <tr><td>2</td><td>J1 Ring 1 lug</td><td>J1 Sleeve lug</td><td>C2 1 nF</td></tr>
+  <tr><td>3</td><td>J1 Ring 2 lug</td><td>J1 Sleeve lug</td><td>C3 1 nF</td></tr>
+  <tr><td>4</td><td>J1 Sleeve lug</td><td>DevKit GND</td><td>wire</td></tr>
+  <tr><td>5</td><td>J1 Tip lug</td><td>C4 (−)</td><td>wire</td></tr>
+  <tr><td>6</td><td>C4 (+)</td><td>Bias node</td><td>R1 1 kΩ</td></tr>
+  <tr><td>7</td><td>Bias node</td><td>DevKit 3V3</td><td>R2 10 kΩ</td></tr>
+  <tr><td>8</td><td>Bias node</td><td>DevKit GND</td><td>R3 10 kΩ</td></tr>
+  <tr><td>9</td><td>Bias node</td><td>DevKit GPIO34</td><td>wire</td></tr>
+  <tr><td>10</td><td>DevKit GPIO25</td><td>R6</td><td>C5 1 µF film</td></tr>
+  <tr><td>11</td><td>R6</td><td>J1 Ring 1 lug</td><td>R6 330 Ω (at the lug)</td></tr>
+  <tr><td>12</td><td>DevKit GPIO27</td><td>Q1 base</td><td>R4 2.2 kΩ</td></tr>
+  <tr><td>13</td><td>Q1 base</td><td>DevKit GND</td><td>R5 100 kΩ</td></tr>
+  <tr><td>14</td><td>Q1 base</td><td>DevKit GND</td><td>C6 1 nF</td></tr>
+  <tr><td>15</td><td>Q1 emitter</td><td>DevKit GND</td><td>wire</td></tr>
+  <tr><td>16</td><td>Q1 collector</td><td>J1 Ring 2 lug</td><td>R7 100 Ω (at the lug)</td></tr>
+</table></div>
+
+<h2 id="checks-after-building">9. Checks after building</h2>
+
+<p><strong>Before power (meter, board unplugged):</strong></p>
+
+<ol><li>3V3 to GND: no short.</li><li>Tip, Ring 1, Ring 2 each to Sleeve: no short (the capacitors read open after a moment).</li><li>Sleeve lug to DevKit GND: continuity.</li><li>C4 polarity: (−) toward Tip.</li></ol>
+
+<p><strong>With USB power, no radio:</strong></p>
+
+<ol><li>GPIO34 to GND ≈ <strong>1.65 V</strong>.</li><li>Flash the firmware (<a href="https://github.com/hebersoto/radiobee-releases/blob/main/docs/HOW_TO_FLASH_RadioBee_P1.md">HOW_TO_FLASH_RadioBee_P1.md</a>).</li><li>DevKit blue LED steady on.</li><li>USB console (115200 baud), press <code>s</code>: firmware version and <code>BT/BLE Name: RadioBee P1-XXXX</code>.</li></ol>
+
+<p><strong>With the radio:</strong></p>
+
+<ol><li>Connect an app (APRSdroid, PinPoint, aprs.fi) and send a beacon: the radio keys and the LED stays on during TX.</li><li>Listen on a second receiver; adjust TXDAC for clean audio and correct deviation (<a href="https://github.com/hebersoto/radiobee-releases/blob/main/docs/USER_GUIDE.md">user guide</a>).</li><li>Receive: keep the radio volume low to medium (about ¼ on a Baofeng). Too loud clips the input.</li></ol>
+
+<h2 id="support">Support</h2>
+
+<p>Open an <a href="https://github.com/hebersoto/radiobee-releases/issues">issue</a> with a photo of your wiring, the firmware version, the radio and what happened.</p>
+
+<footer>RadioBee P1 · build guide · KP3M</footer>
+</main>
+</body>
+</html>
