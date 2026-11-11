@@ -98,24 +98,24 @@ footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--line);
 <h2 id="parts-list">1. Parts list</h2>
 
 <div class="table-wrap"><table>
-  <tr><th>&#10003;</th><th>Ref</th><th>Qty</th><th>Value</th><th>Marking / how to recognize it</th><th>Where it goes</th></tr>
-  <tr><td>&#9744;</td><td>DevKit</td><td>1</td><td>ESP32-WROOM-32 DevKit, 38-pin, CP2102 USB</td><td>BOOT + EN buttons, blue LED (status LED)</td><td>—</td></tr>
-  <tr><td>&#9744;</td><td>J1</td><td>1</td><td>3.5 mm TRRS female jack, 4-pole</td><td>4 contacts (Tip / Ring 1 / Ring 2 / Sleeve)</td><td>Radio cable</td></tr>
-  <tr><td>&#9744;</td><td>Q1</td><td>1</td><td>BC547 NPN transistor, TO-92</td><td>"BC547" (2N2222 / 2N3904 work, different pinout)</td><td>PTT switch</td></tr>
-  <tr><td>&#9744;</td><td>C1</td><td>1</td><td><strong>47 pF</strong> ceramic, C0G / NP0</td><td>"470" or "47"</td><td>Tip lug → Sleeve lug</td></tr>
-  <tr><td>&#9744;</td><td>C2</td><td>1</td><td><strong>1 nF</strong> ceramic</td><td>"102"</td><td>Ring 1 lug → Sleeve lug</td></tr>
-  <tr><td>&#9744;</td><td>C3</td><td>1</td><td><strong>1 nF</strong> ceramic</td><td>"102"</td><td>Ring 2 lug → Sleeve lug</td></tr>
-  <tr><td>&#9744;</td><td>C4</td><td>1</td><td><strong>10 µF</strong> electrolytic, 16 V or more</td><td>can with (−) stripe, <strong>polarized</strong></td><td>Tip → R1, <strong>(−) toward Tip</strong></td></tr>
-  <tr><td>&#9744;</td><td>C5</td><td>1</td><td><strong>1 µF</strong> film, 63 V</td><td>"105", no polarity</td><td>GPIO25 → R6</td></tr>
-  <tr><td>&#9744;</td><td>C6</td><td>1</td><td><strong>1 nF</strong> ceramic</td><td>"102"</td><td>Q1 base → GND</td></tr>
-  <tr><td>&#9744;</td><td>R1</td><td>1</td><td><strong>1 kΩ</strong> ¼ W</td><td>brown black red</td><td>C4 (+) → GPIO34 node</td></tr>
-  <tr><td>&#9744;</td><td>R2</td><td>1</td><td><strong>10 kΩ</strong> ¼ W</td><td>brown black orange</td><td>GPIO34 node → 3V3</td></tr>
-  <tr><td>&#9744;</td><td>R3</td><td>1</td><td><strong>10 kΩ</strong> ¼ W</td><td>brown black orange</td><td>GPIO34 node → GND</td></tr>
-  <tr><td>&#9744;</td><td>R4</td><td>1</td><td><strong>2.2 kΩ</strong> ¼ W</td><td>red red red</td><td>GPIO27 → Q1 base</td></tr>
-  <tr><td>&#9744;</td><td>R5</td><td>1</td><td><strong>100 kΩ</strong> ¼ W</td><td>brown black yellow</td><td>Q1 base → GND</td></tr>
-  <tr><td>&#9744;</td><td>R6</td><td>1</td><td><strong>330 Ω</strong> ¼ W</td><td>orange orange brown</td><td>C5 → Ring 1 lug (at the jack)</td></tr>
-  <tr><td>&#9744;</td><td>R7</td><td>1</td><td><strong>100 Ω</strong> ¼ W</td><td>brown black brown</td><td>Q1 collector → Ring 2 lug</td></tr>
-  <tr><td>&#9744;</td><td>—</td><td>—</td><td>Hook-up wire, about 30 cm</td><td>thin, solid or stranded</td><td>—</td></tr>
+  <tr><th>✓</th><th>Ref</th><th>Qty</th><th>Value</th><th>Marking / how to recognize it</th><th>Where it goes</th></tr>
+  <tr><td>☐</td><td>DevKit</td><td>1</td><td>ESP32-WROOM-32 DevKit, 38-pin, CP2102 USB</td><td>BOOT + EN buttons, blue LED (status LED)</td><td>—</td></tr>
+  <tr><td>☐</td><td>J1</td><td>1</td><td>3.5 mm TRRS female jack, 4-pole</td><td>4 contacts (Tip / Ring 1 / Ring 2 / Sleeve)</td><td>Radio cable</td></tr>
+  <tr><td>☐</td><td>Q1</td><td>1</td><td>BC547 NPN transistor, TO-92</td><td>"BC547" (2N2222 / 2N3904 work, different pinout)</td><td>PTT switch</td></tr>
+  <tr><td>☐</td><td>C1</td><td>1</td><td><strong>47 pF</strong> ceramic, C0G / NP0</td><td>"470" or "47"</td><td>Tip lug → Sleeve lug</td></tr>
+  <tr><td>☐</td><td>C2</td><td>1</td><td><strong>1 nF</strong> ceramic</td><td>"102"</td><td>Ring 1 lug → Sleeve lug</td></tr>
+  <tr><td>☐</td><td>C3</td><td>1</td><td><strong>1 nF</strong> ceramic</td><td>"102"</td><td>Ring 2 lug → Sleeve lug</td></tr>
+  <tr><td>☐</td><td>C4</td><td>1</td><td><strong>10 µF</strong> electrolytic, 16 V or more</td><td>can with (−) stripe, <strong>polarized</strong></td><td>Tip → R1, <strong>(−) toward Tip</strong></td></tr>
+  <tr><td>☐</td><td>C5</td><td>1</td><td><strong>1 µF</strong> film, 63 V</td><td>"105", no polarity</td><td>GPIO25 → R6</td></tr>
+  <tr><td>☐</td><td>C6</td><td>1</td><td><strong>1 nF</strong> ceramic</td><td>"102"</td><td>Q1 base → GND</td></tr>
+  <tr><td>☐</td><td>R1</td><td>1</td><td><strong>1 kΩ</strong> ¼ W</td><td>brown black red</td><td>C4 (+) → GPIO34 node</td></tr>
+  <tr><td>☐</td><td>R2</td><td>1</td><td><strong>10 kΩ</strong> ¼ W</td><td>brown black orange</td><td>GPIO34 node → 3V3</td></tr>
+  <tr><td>☐</td><td>R3</td><td>1</td><td><strong>10 kΩ</strong> ¼ W</td><td>brown black orange</td><td>GPIO34 node → GND</td></tr>
+  <tr><td>☐</td><td>R4</td><td>1</td><td><strong>2.2 kΩ</strong> ¼ W</td><td>red red red</td><td>GPIO27 → Q1 base</td></tr>
+  <tr><td>☐</td><td>R5</td><td>1</td><td><strong>100 kΩ</strong> ¼ W</td><td>brown black yellow</td><td>Q1 base → GND</td></tr>
+  <tr><td>☐</td><td>R6</td><td>1</td><td><strong>330 Ω</strong> ¼ W</td><td>orange orange brown</td><td>C5 → Ring 1 lug (at the jack)</td></tr>
+  <tr><td>☐</td><td>R7</td><td>1</td><td><strong>100 Ω</strong> ¼ W</td><td>brown black brown</td><td>Q1 collector → Ring 2 lug</td></tr>
+  <tr><td>☐</td><td>—</td><td>—</td><td>Hook-up wire, about 30 cm</td><td>thin, solid or stranded</td><td>—</td></tr>
 </table></div>
 
 <p><strong>Count check:</strong> 6 capacitors (1 × 47 pF, 3 × 1 nF, 1 × 10 µF, 1 × 1 µF), 7 resistors (100, 330, 1k, 2.2k, 10k, 10k, 100k), 1 transistor, 1 jack, 1 DevKit.</p>

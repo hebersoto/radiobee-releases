@@ -20,25 +20,25 @@ hand-wired with hook-up wire. After building, install the firmware with
 
 ## 1. Parts list
 
-| [ ] | Ref | Qty | Value | Marking / how to recognize it | Where it goes |
+| ✓ | Ref | Qty | Value | Marking / how to recognize it | Where it goes |
 |---|---|---|---|---|---|
-| [ ] | DevKit | 1 | ESP32-WROOM-32 DevKit, 38-pin, CP2102 USB | BOOT + EN buttons, blue LED (status LED) | — |
-| [ ] | J1 | 1 | 3.5 mm TRRS female jack, 4-pole | 4 contacts (Tip / Ring 1 / Ring 2 / Sleeve) | Radio cable |
-| [ ] | Q1 | 1 | BC547 NPN transistor, TO-92 | "BC547" (2N2222 / 2N3904 work, different pinout) | PTT switch |
-| [ ] | C1 | 1 | **47 pF** ceramic, C0G / NP0 | "470" or "47" | Tip lug → Sleeve lug |
-| [ ] | C2 | 1 | **1 nF** ceramic | "102" | Ring 1 lug → Sleeve lug |
-| [ ] | C3 | 1 | **1 nF** ceramic | "102" | Ring 2 lug → Sleeve lug |
-| [ ] | C4 | 1 | **10 µF** electrolytic, 16 V or more | can with (−) stripe, **polarized** | Tip → R1, **(−) toward Tip** |
-| [ ] | C5 | 1 | **1 µF** film, 63 V | "105", no polarity | GPIO25 → R6 |
-| [ ] | C6 | 1 | **1 nF** ceramic | "102" | Q1 base → GND |
-| [ ] | R1 | 1 | **1 kΩ** ¼ W | brown black red | C4 (+) → GPIO34 node |
-| [ ] | R2 | 1 | **10 kΩ** ¼ W | brown black orange | GPIO34 node → 3V3 |
-| [ ] | R3 | 1 | **10 kΩ** ¼ W | brown black orange | GPIO34 node → GND |
-| [ ] | R4 | 1 | **2.2 kΩ** ¼ W | red red red | GPIO27 → Q1 base |
-| [ ] | R5 | 1 | **100 kΩ** ¼ W | brown black yellow | Q1 base → GND |
-| [ ] | R6 | 1 | **330 Ω** ¼ W | orange orange brown | C5 → Ring 1 lug (at the jack) |
-| [ ] | R7 | 1 | **100 Ω** ¼ W | brown black brown | Q1 collector → Ring 2 lug |
-| [ ] | — | — | Hook-up wire, about 30 cm | thin, solid or stranded | — |
+| ☐ | DevKit | 1 | ESP32-WROOM-32 DevKit, 38-pin, CP2102 USB | BOOT + EN buttons, blue LED (status LED) | — |
+| ☐ | J1 | 1 | 3.5 mm TRRS female jack, 4-pole | 4 contacts (Tip / Ring 1 / Ring 2 / Sleeve) | Radio cable |
+| ☐ | Q1 | 1 | BC547 NPN transistor, TO-92 | "BC547" (2N2222 / 2N3904 work, different pinout) | PTT switch |
+| ☐ | C1 | 1 | **47 pF** ceramic, C0G / NP0 | "470" or "47" | Tip lug → Sleeve lug |
+| ☐ | C2 | 1 | **1 nF** ceramic | "102" | Ring 1 lug → Sleeve lug |
+| ☐ | C3 | 1 | **1 nF** ceramic | "102" | Ring 2 lug → Sleeve lug |
+| ☐ | C4 | 1 | **10 µF** electrolytic, 16 V or more | can with (−) stripe, **polarized** | Tip → R1, **(−) toward Tip** |
+| ☐ | C5 | 1 | **1 µF** film, 63 V | "105", no polarity | GPIO25 → R6 |
+| ☐ | C6 | 1 | **1 nF** ceramic | "102" | Q1 base → GND |
+| ☐ | R1 | 1 | **1 kΩ** ¼ W | brown black red | C4 (+) → GPIO34 node |
+| ☐ | R2 | 1 | **10 kΩ** ¼ W | brown black orange | GPIO34 node → 3V3 |
+| ☐ | R3 | 1 | **10 kΩ** ¼ W | brown black orange | GPIO34 node → GND |
+| ☐ | R4 | 1 | **2.2 kΩ** ¼ W | red red red | GPIO27 → Q1 base |
+| ☐ | R5 | 1 | **100 kΩ** ¼ W | brown black yellow | Q1 base → GND |
+| ☐ | R6 | 1 | **330 Ω** ¼ W | orange orange brown | C5 → Ring 1 lug (at the jack) |
+| ☐ | R7 | 1 | **100 Ω** ¼ W | brown black brown | Q1 collector → Ring 2 lug |
+| ☐ | — | — | Hook-up wire, about 30 cm | thin, solid or stranded | — |
 
 **Count check:** 6 capacitors (1 × 47 pF, 3 × 1 nF, 1 × 10 µF, 1 × 1 µF), 7 resistors (100, 330, 1k, 2.2k, 10k,
 10k, 100k), 1 transistor, 1 jack, 1 DevKit.
