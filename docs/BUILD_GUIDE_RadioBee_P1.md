@@ -4,6 +4,9 @@ How to build the RadioBee P1 radio interface: an ESP32-WROOM-32 DevKit board, a 
 hand-wired with hook-up wire. After building, install the firmware with
 [HOW_TO_FLASH_RadioBee_P1.md](HOW_TO_FLASH_RadioBee_P1.md) and see the [user guide](USER_GUIDE.md).
 
+> **Kits:** parts, unassembled kits and assembled kits will be available at
+> [kp4pra.praprs.com](https://kp4pra.praprs.com/) by December 2026.
+
 <p align="center"><img src="images/RadioBee_P1.jpg" alt="RadioBee P1 in its enclosure" width="600"></p>
 
 > **Verify before you solder**
@@ -39,6 +42,8 @@ hand-wired with hook-up wire. After building, install the firmware with
 
 **Count check:** 6 capacitors (1 × 47 pF, 3 × 1 nF, 1 × 10 µF, 1 × 1 µF), 7 resistors (100, 330, 1k, 2.2k, 10k,
 10k, 100k), 1 transistor, 1 jack, 1 DevKit.
+
+Parts, unassembled kits and assembled kits: [kp4pra.praprs.com](https://kp4pra.praprs.com/) (by December 2026).
 
 **Also needed (not in the kit):**
 

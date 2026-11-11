@@ -63,6 +63,9 @@ BOOT button, LEDs, USB console, Bluetooth (SPP) and BLE (nRF apps) consoles, and
 Parts list, wiring diagrams (RX, TX, PTT, TRRS jack), wire list and checks:
 [docs/BUILD_GUIDE_RadioBee_P1.md](docs/BUILD_GUIDE_RadioBee_P1.md)
 
+> **Kits:** parts, unassembled kits and assembled kits will be available at
+> [kp4pra.praprs.com](https://kp4pra.praprs.com/) by December 2026.
+
 ## What's New in 0.2.42
 
 - All RadioBee text (USB console and Bluetooth console) lines up in PuTTY and other terminals with default settings.
